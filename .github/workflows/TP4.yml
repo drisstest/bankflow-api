@@ -1,0 +1,30 @@
+name: TP4
+
+permissions:
+  contents: read
+
+on: 
+    push:
+      branches: [ main ]
+
+jobs:
+    deploy_staging: 
+        runs-on: ubuntu-latest
+
+        environment: 
+            name: staging
+        
+        steps: 
+            - name: Deploiement staging
+              run: echo "Deploiement staging"
+    
+    deploy_production: 
+        needs: deploy_staging
+        runs-on: ubuntu-latest
+
+        environment: 
+            name: production
+        
+        steps: 
+            - name: Deploiement production
+              run: echo "Deploiement production"
