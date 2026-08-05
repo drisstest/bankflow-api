@@ -1,0 +1,28 @@
+
+# Fichier `dependabot.yml` de base avec
+# Configuration minimale pour deux gestionnaires de paquets
+
+version: 2
+updates:
+  # Activer les mises à jour de version pour npm
+  - package-ecosystem: "pip"
+    # Recherchez les fichiers `package.json` et `lock` dans le répertoire `root`
+    directory: "/"
+    # Vérifiez quotidiennement (en semaine) le registre npm pour les mises à jour.
+    schedule:
+      interval: "daily"
+
+  # Activer les mises à jour de version pour Docker
+  - package-ecosystem: "docker"
+    # Recherchez un fichier `Dockerfile` dans le répertoire `root`
+    directory: "/"
+    # Vérifiez les mises à jour une fois par semaine
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "github-actions"
+    # Recherchez les fichiers `workflow` dans le répertoire `.github/workflows`
+    directory: "/"
+    # Vérifiez les mises à jour une fois par semaine
+    schedule:
+      interval: "daily"
