@@ -7,6 +7,7 @@ Règles métier volontairement strictes (pense compliance bancaire) :
 - Un retrait ne peut pas mettre le compte à découvert
 - Un virement doit respecter les deux règles ci-dessus sur les deux comptes
 """
+from dataclasses import dataclass
 from itertools import count
 from typing import Dict
 
