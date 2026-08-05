@@ -1,0 +1,28 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: ["Docker Build & Push"]
+    types: [completed]
+
+jobs:
+  deploy-staging:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Déploiement staging
+        run: echo "Déploiement vers staging effectué"
+
+  deploy-production:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    environment: production # nécessite un reviewer configuré dans Settings > Environments
+    steps:
+      - name: Déploiement production
+        run: echo "Déploiement vers production effectué"
+
+# Note : la version la plus simple pour t'entraîner au TP4 est de déclencher
+# ce workflow directement sur `push` plutôt que via workflow_run — le
+# workflow_run ajoute une couche de complexité (chaînage entre workflows)
+# que tu peux explorer une fois le mécanisme d'environnement bien compris.

@@ -1,0 +1,43 @@
+# --- Fichier 1 : .github/workflows/reusable-ci.yml (le workflow réutilisable) ---
+name: Reusable CI
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        required: false
+        type: string
+        default: "3.12"
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python-version }}
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: flake8 app tests
+      - run: python -m pytest -q
+
+---
+# --- Fichier 2 : .github/workflows/ci.yml (l'appelant, devient minuscule) ---
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  ci-3-11:
+    uses: ./.github/workflows/reusable-ci.yml
+    with:
+      python-version: "3.11"
+
+  ci-3-12:
+    uses: ./.github/workflows/reusable-ci.yml
+    with:
+      python-version: "3.12"
