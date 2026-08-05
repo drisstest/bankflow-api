@@ -3,8 +3,10 @@ name: TP1
 permissions:
   contents: read
 
-on: 
-    workflow_dispatch:
+on:
+  push:
+    branches: [ main ]
+  pull_request:
 
 jobs: 
     Build_and_Test: 
