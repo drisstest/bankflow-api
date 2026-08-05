@@ -1,0 +1,44 @@
+name: TP1
+
+permissions:
+  contents: read
+
+on: 
+    push:
+      branches: [ main ]
+
+jobs: 
+    Build_and_Test: 
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                python-version: [3.11, 3.12]
+        
+            fail-fast: false
+
+        steps: 
+            - name: Checkout code
+              uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 #v4
+            
+            - name: Set up Python
+              uses: actions/setup-python@7f4fc3e22c37d6ff65e88745f38bd3157c663f7c #v4
+              with: 
+                python-version: ${{ matrix.python-version }}
+                cache: 'pip' # garde une copie des dependances deja installés basés sur le hash du contenu du fichier requirements.txt ( cache-dependency-path: requirements.txt ) pour ne pas les reinstaller à chaque fois
+                cache-dependency-path: requirements.txt
+            
+            - name: install dependencies an
+              run: pip install -r requirements.txt 
+                
+            - name: Run tests
+              run: | 
+                flake8 app tests
+                pytest --cov=app --cov-report=html 
+
+            - name: Upload coverage report 
+              uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+              with: 
+                name: coverage-report-${{ matrix.python-version }}
+                path: htmlcov/
+              

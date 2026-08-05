@@ -4,9 +4,7 @@ permissions:
   contents: read
 
 on: 
-    push:
-      branches: [ main ]
-    pull_request:
+    workflow_dispatch:
 
 jobs: 
     Build_and_Test: 
@@ -15,6 +13,8 @@ jobs:
         strategy:
             matrix:
                 python-version: [3.11, 3.12]
+        
+            fail-fast: false
 
         steps: 
             - name: Checkout code
