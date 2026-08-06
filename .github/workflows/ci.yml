@@ -1,0 +1,14 @@
+name: ci
+
+on: 
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs: 
+  call_reusable_ci: 
+    uses: ./.github/workflows/reusable-ci.yml
+    with:
+        python-version: '3.11'
